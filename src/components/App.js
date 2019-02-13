@@ -8,7 +8,8 @@ class App extends React.Component {
         quotes: [],
         currentQuote: {},
         isLoading: true,
-        hasError: false
+        hasError: false,
+        color: this.generateColor()
     };
 
     componentDidMount() {
@@ -35,6 +36,15 @@ class App extends React.Component {
             });
     }
 
+    generateColor() {
+        return (
+            "#" +
+            Math.random()
+                .toString(16)
+                .substr(-6)
+        );
+    }
+
     getNewQuote = () => {
         const state = this.state;
         let quoteIndex = Math.floor(Math.random() * state.quotes.length);
@@ -45,7 +55,8 @@ class App extends React.Component {
         }
 
         this.setState({
-            currentQuote: state.quotes[quoteIndex]
+            currentQuote: state.quotes[quoteIndex],
+            color: this.generateColor()
         });
     };
 
@@ -70,15 +81,19 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="wrapper">
-                <div className="quote" id="quote-box">
+            <div className="wrapper" style={{ background: this.state.color }}>
+                <div className="quote" id="quote-box" style={{ color: this.state.color }}>
                     {this.renderQuote()}
                     <div className="quote__buttons">
                         <div className="socials left">
-                            <Button {...LinkProps} />
+                            <Button {...LinkProps} style={{ background: this.state.color }} />
                         </div>
                         <div className="right">
-                            <Button {...buttonProps} onClick={this.getNewQuote} />
+                            <Button
+                                {...buttonProps}
+                                onClick={this.getNewQuote}
+                                style={{ background: this.state.color }}
+                            />
                         </div>
                     </div>
                 </div>
@@ -89,8 +104,7 @@ class App extends React.Component {
 
 const buttonProps = {
     id: "new-quote",
-    text: "New quote",
-    className: "test asdfasdf"
+    text: "New quote"
 };
 
 const LinkProps = {
