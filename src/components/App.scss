@@ -1,0 +1,52 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgb(115, 168, 87);
+}
+
+.quote {
+    border-radius: 3px;
+    width: 50%;
+    max-height: 80vh;
+    max-width: 500px;
+    min-width: 300px;
+    padding: 4vmin;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.quote__text {
+    font-size: 1em;
+    color: rgb(115, 168, 87);
+    text-align: center;
+}
+
+.quote__author {
+    font-size: 0.8em;
+    padding-top: 1em;
+    text-align: right;
+    color: rgb(115, 168, 87);
+    font-weight: 300;
+}
+
+.quote__buttons {
+    margin-top: 1em;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.socials a {
+    margin-right: 5px;
+}
+
+.socials a i {
+    vertical-align: top;
+}
