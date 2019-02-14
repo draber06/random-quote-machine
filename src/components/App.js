@@ -1,7 +1,11 @@
 import React from "react";
+import Axios from "axios";
 import { Button } from "../components/Button";
 
 import "./App.scss";
+
+const QUOTES_URL =
+    "https://gist.githubusercontent.com/draber06/8d8a83416fb5a785b8c529249a43c49c/raw/979fcd9ed0b24851ac4f0a0414773cc2919cf954/quotes.json";
 
 class App extends React.Component {
     state = {
@@ -13,27 +17,32 @@ class App extends React.Component {
     };
 
     componentDidMount() {
-        fetch(
-            "https://gist.githubusercontent.com/draber06/8d8a83416fb5a785b8c529249a43c49c/raw/979fcd9ed0b24851ac4f0a0414773cc2919cf954/quotes.json"
-            // "https://gist.githubusercontent.com/draber06/8d8a83416fb5a785b8c529249a43c49c/raw/979fcd9ed0b24851ac4f0a0414773cc19cf954/quotes.json"
-        )
-            .then(response => response.json())
-            .then(({ quotes }) => {
-                const quoteIndex = Math.floor(Math.random() * quotes.length);
-                this.setState({
-                    quotes,
-                    currentQuote: quotes[quoteIndex],
-                    isLoading: false,
-                    hasError: false
+        let quotes = window.localStorage.getItem("quote-machine");
+        if (quotes) {
+            this.fetchQuotes(JSON.parse(quotes));
+        } else {
+            Axios.get(QUOTES_URL)
+                .then(({ data }) => {
+                    this.fetchQuotes(data.quotes);
+                    window.localStorage.setItem("quote-machine", JSON.stringify(data.quotes));
+                })
+                .catch(e => {
+                    this.setState({
+                        isLoading: false,
+                        hasError: true
+                    });
                 });
-            })
-            .catch(e => {
-                this.setState({
-                    isLoading: false,
-                    hasError: true
-                });
-                console.log(this.state.isLoading);
-            });
+        }
+    }
+
+    fetchQuotes(quotes) {
+        const quoteIndex = Math.floor(Math.random() * quotes.length);
+        this.setState({
+            quotes,
+            currentQuote: quotes[quoteIndex],
+            isLoading: false,
+            hasError: false
+        });
     }
 
     generateColor() {
@@ -63,9 +72,9 @@ class App extends React.Component {
     renderQuote = () => {
         const state = this.state;
         if (state.isLoading) {
-            return <>Loading</>;
+            return "Loading";
         } else if (state.hasError) {
-            return <>Oops! Something went wrong. Try to reload page.</>;
+            return "Oops! Something went wrong. Try to reload page.";
         }
         return (
             <>

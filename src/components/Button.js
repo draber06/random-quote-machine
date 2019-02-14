@@ -8,7 +8,13 @@ export const Button = ({ className, text, href, ...rest }) => {
     const classList = className ? `${defaultClasses} ${className}` : defaultClasses;
     if (href) {
         return (
-            <a target="_blank" rel="noopener noreferrer" {...rest} className={classList}>
+            <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={href}
+                {...rest}
+                className={classList}
+            >
                 {text}
             </a>
         );
